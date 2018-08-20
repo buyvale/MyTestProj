@@ -18,7 +18,6 @@ public class ArrayListTest {
 
     @Test
     public void testGetByIndex() {
-        assertEquals(3, arrayWithThreeElements.size());
 
         assertEquals("A", arrayWithThreeElements.get(0));
         assertEquals("B", arrayWithThreeElements.get(1));
@@ -42,10 +41,11 @@ public class ArrayListTest {
     @Test
     public void testAddByIndex()
     {
-        arrayWithThreeElements.add("E",1);
+        arrayWithThreeElements.add("E",2);
         assertEquals("A",arrayWithThreeElements.get(0));
-        assertEquals("E",arrayWithThreeElements.get(1));
-        assertEquals("B",arrayWithThreeElements.get(2));
+        assertEquals("B",arrayWithThreeElements.get(1));
+        assertEquals("E",arrayWithThreeElements.get(2));
+        assertEquals("C",arrayWithThreeElements.get(3));
 
     }
 
@@ -55,6 +55,12 @@ public class ArrayListTest {
         arrayWithThreeElements.remove(1);
         assertEquals("A",arrayWithThreeElements.get(0));
         assertEquals("C",arrayWithThreeElements.get(1));
+    }
+
+    @Test
+    public void testIsEmpty()
+    {
+        assertEquals(false,arrayWithThreeElements.isEmpty());
     }
 
 }

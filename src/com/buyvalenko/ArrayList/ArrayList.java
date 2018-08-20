@@ -2,12 +2,20 @@ package com.buyvalenko.ArrayList;
 
 
 public class ArrayList implements List {
-    private Object[] array = new Object[5];
-    private Object[] tempDestArray = new Object[10];
+    public static final int INITIAL_ARRAY_SIZE = 5;
+    private Object[] array;
+
+    public ArrayList() {
+
+        this.array = new Object[INITIAL_ARRAY_SIZE * 2];
+    }
+
+    private Object[] tempDestArray = new Object[INITIAL_ARRAY_SIZE];
     private int size;
 
     @Override
     public void add(Object value) {
+        extendArray();
         array[size] = value;
         size++;
     }
@@ -15,44 +23,61 @@ public class ArrayList implements List {
     @Override
     public void add(Object value, int index) {
 
-        if (index <= array.length - 1)
-            System.arraycopy(array, index, tempDestArray, 0, array.length);
+        if (index >= size) {
+            extendArray();
+        }
+
+        Object temp = array[index];
+        System.arraycopy(array, index, tempDestArray, 0, size);
         array[index] = value;
+        System.arraycopy(tempDestArray, 0, array, index + 1, tempDestArray.length);
+        array[index + 1] = temp;
+        size++;
 
     }
 
     @Override
     public Object remove(int index) {
-        return null;
+        if (index > size) {
+            indexOutExeption();
+        }
+        if (index == size - 1) {
+            array[index] = null;
+
+        } else {
+            System.arraycopy(array, index, tempDestArray, 0, size);
+            System.arraycopy(tempDestArray, 1, array, index , tempDestArray.length-1);
+            size--;
+        }
+
+        return array;
     }
 
     @Override
     public Object get(int index) {
-        if (index <=size) {
+        if (index <= size) {
             return array[index];
-        }
-        else
-        {
-            IndexOutOfBoundsException ex = new IndexOutOfBoundsException();
-            return  ex;
+        } else {
+            return indexOutExeption();
         }
     }
 
     @Override
     public Object set(Object value, int index) {
-        if (index <=size) {
+        if (index <= size) {
             return array[index] = value;
-        }
-        else
-        {
-            IndexOutOfBoundsException ex = new IndexOutOfBoundsException();
-            return  ex;
+        } else {
+            return indexOutExeption();
         }
 
     }
 
     @Override
     public void clear() {
+        for (int i=0; i<=array.length; i++)
+        {
+            array[i]=null;
+        }
 
     }
 
@@ -63,7 +88,7 @@ public class ArrayList implements List {
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return (size <= 0) ? true : false;
     }
 
     @Override
@@ -74,11 +99,28 @@ public class ArrayList implements List {
     @Override
     public int indexOf(Object value) {
         return 0;
+
     }
 
     @Override
     public int lastIndexOf(Object value) {
         return 0;
     }
+
+    private void extendArray() {
+        if (array.length == size) {
+            Object[] newArray = new Object[(size * 3) / 2];
+            for (int i = 0; i < size; i++) {
+                newArray[i] = array[i];
+            }
+            array = newArray;
+        }
+    }
+
+    private IndexOutOfBoundsException indexOutExeption() {
+        IndexOutOfBoundsException ex = new IndexOutOfBoundsException();
+        return ex;
+    }
+
 }
 
